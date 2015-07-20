@@ -4,7 +4,7 @@ import sys
 PARENT_PATH = os.getenv('PYMCTS_ROOT')
 SRC_PATH = PARENT_PATH +"src/"
 TEST_PATH = PARENT_PATH +"test/"
-sys.path.append(SRC_PATH)
+sys.path.append(SRC_PATH+"algorithm")
 sys.path.append(TEST_PATH)
 
 from unittest import TestCase
