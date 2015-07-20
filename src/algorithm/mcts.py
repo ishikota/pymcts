@@ -2,6 +2,7 @@ import game
 import random
 from node import Node
 import math
+import util
 
 class MCTS(object):
     """Base routine of MCTS method.
@@ -10,6 +11,7 @@ class MCTS(object):
     """
 
     def __init__(self, playout_num):
+        self.show_progress = False
         self.PLAYOUT_NUM = playout_num
         self.overflow_flg = False
 
@@ -27,11 +29,14 @@ class MCTS(object):
         counter = 0
         
         while counter < self.PLAYOUT_NUM and not self.overflow_flg:
+            if self.show_progress:
+                util.show_progress(counter, self.PLAYOUT_NUM)
             game_state = start_state.clone()
             v_l = self.tree_policy(v_0, game_state)
             delta = self.default_policy(v_l, game_state)
             self.backpropagation(v_l, delta)
             counter += 1
+        if self.show_progress: util.fin_progress()
         act_index = self.best_child(v_0, 0)
         return act_index
 

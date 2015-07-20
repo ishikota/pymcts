@@ -2,7 +2,7 @@ import copy
 from game import Game
 import random
 
-class SampleGame(Game):
+class ConnectFour(Game):
     """Sample game concrete class.
 
     Game concrete class to demonstrate MCTS module.
@@ -10,7 +10,7 @@ class SampleGame(Game):
     """
 
     def __init__(self):
-        super(SampleGame, self).__init__(7)   # 7 is the WIDTH of board
+        super(ConnectFour, self).__init__(7)   # 7 is the WIDTH of board
         
         # ConnectFour Constants
         self.CONNECT_K = 4
@@ -44,9 +44,6 @@ class SampleGame(Game):
             self.update(action)
             if flg: return score
 
-    def get_legal_move(self):
-        return random.choice([col for col in range(7) if self.is_legal(col)])
-
     def is_terminal(self, node_index):
         if self.is_draw(node_index): return True, 0
 
@@ -78,6 +75,9 @@ class SampleGame(Game):
             if i != node_index and self.position[i] != self.HEIGHT:
                 return False
         return True
+
+    def get_legal_move(self):
+        return random.choice([col for col in range(7) if self.is_legal(col)])
 
     def display(self):
         char_map = {0:'-',1:'O',-1:'X'}

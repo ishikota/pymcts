@@ -4,14 +4,15 @@ import sys
 PARENT_PATH = os.getenv('PYMCTS_ROOT')
 SRC_PATH = PARENT_PATH +"src/"
 TEST_PATH = PARENT_PATH +"test/"
-sys.path.append(SRC_PATH)
+sys.path.append(SRC_PATH+"algorithm")
+sys.path.append(SRC_PATH+"examples/connectfour")
 sys.path.append(TEST_PATH)
 
 from unittest import TestCase
 from nose.tools import *
 import mcts
 import pdb
-import sample_game
+import connectfour_model
 from node import Node
 import math
 
@@ -19,7 +20,7 @@ class TestMCTS(TestCase):
 
     def setUp(self):
         self.M = mcts.MCTS(50)
-        self.G = sample_game.SampleGame()
+        self.G = connectfour_model.ConnectFour()
     
     def tearDown(self):
         pass
