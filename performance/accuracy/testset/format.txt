@@ -1,0 +1,18 @@
+*** Format of *.test file ***
+
+Write the board state to read like below.
+* The line start with sharp(#) is ignored.
+* write answer of test in a line like below format.(answer<space>{number of answer})
+
+
+# Example
+# This is a sample of easy performance test
+# Answer play of first player(O) is 3(0-index).
+answer 3
+- - - - - - - 
+- - - - - - - 
+- - - - - - - 
+- - - X - - - 
+- - - X - - - 
+- - - X O O O 
+

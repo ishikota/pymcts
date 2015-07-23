@@ -1,0 +1,21 @@
+
+
+************** MCTS PERFORMANCE TEST ******************
+
+ *** SETTINGS ***
+ ALGORITHM   = UCT MCTS
+ PLAYOUT_NUM = 1000
+ TESTSET     = /Users/kota/development/pymcts/performance/accuracy/testset/initial.in
+ REPEAT      = 10
+
+ *** DISTRIBUTION ***
+FREQUENCY  = [0, 0, 2, 2, 3, 2, 1]
+RATIO      = [0.0, 0.0, 0.2, 0.2, 0.3, 0.2, 0.1]
+
+ ***  ACCURACY  ***
+ - accuracy =     2/10    = 20.00000 %
+ - bc_freq  =   188/1000  = 18.80000 %
+ - bw_freq  =   296/1000  = 29.60000 %
+ - wc_freq  =   188/1000  = 18.80000 %
+ - ww_freq  =     7/1000  = 0.70000 %
+
