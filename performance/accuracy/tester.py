@@ -11,7 +11,7 @@ sys.path.append(SRC_PATH+"drawing")
 import reader
 import mcts
 import connectfour_model
-import mcts4draw
+import heuristic_model
 import pdb
 import artist
 
@@ -24,6 +24,27 @@ class Tester(object):
         {best,worst}_{correct,wrong}.png: img of MCTS tree
     """
     
+    def setup_algo(self, algo):
+        """
+        get proper MCTS module and model from specified algorithm
+        
+        Args:
+            algo: algorithm to use
+
+        Returns:
+            mcts: MCTS module which is used in algo
+            model: model which is used in algo
+        """
+
+        mc, model = None, None
+        if algo == "model_heuristic":
+            mc = mcts.MCTS()
+            model = heuristic_model.ConnectFour()
+        else: # default
+            mc = mcts.MCTS()
+            model = connectfour_model.ConnectFour()
+        return mc, model
+
     def test(self, algo, playout, repeat, testfile, output_dir):
         """
         Execute test with passed parameter and
@@ -39,8 +60,8 @@ class Tester(object):
 
         # setup
         r = reader.Reader()
-        mc = mcts4draw.MCTS(playout)
-        model = connectfour_model.ConnectFour()
+        mc, model = self.setup_algo(algo)
+        mc.set_playout(playout)
         ans, model, next_player = r.read_board(testfile, model)
         ans = int(ans)
         model.next_player = next_player

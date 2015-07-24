@@ -10,10 +10,13 @@ class MCTS(object):
             PLAYOUT_NUM: paremter to define maximum iteration times of MCTS
     """
 
-    def __init__(self, playout_num):
+    def __init__(self):
         self.show_progress = False
-        self.PLAYOUT_NUM = playout_num
+        self.PLAYOUT_NUM = 50
         self.overflow_flg = False
+
+    def set_playout(self, num):
+        self.PLAYOUT_NUM = num
 
     def start(self, start_state):
         """Start point of MCTS algorithm
@@ -38,7 +41,7 @@ class MCTS(object):
             counter += 1
         if self.show_progress: util.fin_progress()
         act_index = self.best_child(v_0, 0)
-        return act_index
+        return v_0, act_index
 
     C = 0.7071067811865475 # 1.0/sqrt(2)
     def tree_policy(self, v, game):
@@ -110,7 +113,7 @@ class MCTS(object):
         """
         is_first, best_val, best_index = True, 0, -1
         for i, child in enumerate(v.children):
-            if child == -2: continue    # this child is illegal action
+            if child == -2 or child == -1: continue    # this child is illegal action
             val = self.calc_node_score(child, c)
             if val > best_val or is_first:
                 best_val = val

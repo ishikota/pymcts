@@ -14,7 +14,7 @@ sys.path.append(SRC_PATH+"algorithm")
 sys.path.append(SRC_PATH+"examples/connectfour/")
 
 import pdb
-import mcts4draw
+import mcts
 import connectfour_model
 from node import Node
 import networkx as nx
@@ -31,7 +31,7 @@ class Artist:
             root: object of root node of mcts tree to write out.
         """
 
-        _mcts = mcts4draw.MCTS(1)
+        _mcts = mcts.MCTS()
         C = 0.7071067811865475 # 1.0/sqrt(2)
         id_count = 0
         q = [] # (id, node)

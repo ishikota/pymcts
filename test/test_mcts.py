@@ -19,7 +19,7 @@ import math
 class TestMCTS(TestCase):
 
     def setUp(self):
-        self.M = mcts.MCTS(50)
+        self.M = mcts.MCTS()
         self.G = connectfour_model.ConnectFour()
     
     def tearDown(self):
