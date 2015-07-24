@@ -7,15 +7,18 @@ sys.path.append(SRC_PATH+"algorithm")
 
 import mcts
 import connectfour_model
+import heuristic_model
 
 # Clear the shell
 os.system("clear")
 
 # Setup for MCTS
-model = connectfour_model.ConnectFour()
+model = heuristic_model.ConnectFour()
+#model = connectfour_model.ConnectFour()
 print '> Input the maximum number of iteration in MCTS...'
 playout_num = int(raw_input())
-_mcts = mcts.MCTS(playout_num)
+_mcts = mcts.MCTS()
+_mcts.set_playout(playout_num)
 _mcts.show_progress = True
 
 # start the game !!
@@ -34,7 +37,7 @@ while True:
         break
     
     # MCTS CPU Turn
-    action = _mcts.start(model)
+    root, action = _mcts.start(model)
     print 'MCTS make a move on column '+str(action+1)
     end_flg, score = model.is_terminal(action)
     model.update(action)
