@@ -1,0 +1,48 @@
+
+
+************** MCTS SEARCH TIME TEST ******************
+
+ *** SETTINGS ***
+ ALGORITHM = model_heuristic
+ PLAYOUT   = 500
+ REPEAT    = 20
+
+ *** RESULT ***
+ MEAN   OF 1-MCTS PROCESS   : 3.002333
+ MEDIAN OF 1-MCTS PROCESS   : 2.979441
+ MEAN   OF 1-ITERATION      : 0.006005
+ MEDIAN OF 1-ITERATION      : 0.005959
+
+
+
+
+************** MCTS SEARCH TIME TEST ******************
+
+ *** SETTINGS ***
+ ALGORITHM = model_heuristic
+ PLAYOUT   = 1000
+ REPEAT    = 20
+
+ *** RESULT ***
+ MEAN   OF 1-MCTS PROCESS   : 5.922471
+ MEDIAN OF 1-MCTS PROCESS   : 5.887451
+ MEAN   OF 1-ITERATION      : 0.005922
+ MEDIAN OF 1-ITERATION      : 0.005887
+
+
+
+
+************** MCTS SEARCH TIME TEST ******************
+
+ *** SETTINGS ***
+ ALGORITHM = model_heuristic
+ PLAYOUT   = 2000
+ REPEAT    = 20
+
+ *** RESULT ***
+ MEAN   OF 1-MCTS PROCESS   : 11.611316
+ MEDIAN OF 1-MCTS PROCESS   : 11.465898
+ MEAN   OF 1-ITERATION      : 0.005806
+ MEDIAN OF 1-ITERATION      : 0.005733
+
+
