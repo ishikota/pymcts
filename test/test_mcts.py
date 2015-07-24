@@ -7,6 +7,7 @@ TEST_PATH = PARENT_PATH +"test/"
 sys.path.append(SRC_PATH+"algorithm")
 sys.path.append(SRC_PATH+"examples/connectfour")
 sys.path.append(TEST_PATH)
+sys.path.append(PARENT_PATH+"performance/accuracy/testset")
 
 from unittest import TestCase
 from nose.tools import *
@@ -15,6 +16,7 @@ import pdb
 import connectfour_model
 from node import Node
 import math
+import reader
 
 class TestMCTS(TestCase):
 
@@ -26,7 +28,13 @@ class TestMCTS(TestCase):
         pass
 
     def test_main_routine(self):
-        print self.M.start(self.G)
+        model = self.G
+        r = reader.Reader()
+        f_name = PARENT_PATH+"performance/accuracy/testset/5-step-read.in"
+        ans, model, next_player = r.read_board(f_name, model)
+        self.M.set_playout(2000)
+        root, act = self.M.start(model)
+        ok_(0==act or 1==act)
 
     def test_tree_policy(self):
         data = [(31.16,105),(52.89,153),(113.05,285),
@@ -57,6 +65,7 @@ class TestMCTS(TestCase):
         u(3);u(3);u(3);u(3);u(3);u(3);u(4);u(4);u(2);u(1);u(2);u(1)
         
         p = Node(7)
+        self.M.ME = self.G.next_player
         for i in range(6):
             self.M.expand(p, self.G)
         eq_(p.unvisited,0)

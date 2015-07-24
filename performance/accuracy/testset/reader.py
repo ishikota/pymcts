@@ -28,7 +28,8 @@ class Reader:
             if len(tmp)==0 or tmp[0] =='#':
                 continue
             elif tmp[:3] == 'ans':
-                tmp2, ans = tmp.split()
+                tmp2, ans = tmp.split(':')
+                ans = map(int, ans.split(','))
                 continue
             
             line = tmp.split()

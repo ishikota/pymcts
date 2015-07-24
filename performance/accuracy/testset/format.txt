@@ -8,7 +8,7 @@ Write the board state to read like below.
 # Example
 # This is a sample of easy performance test
 # Answer play of first player(O) is 3(0-index).
-answer 3
+answer:3
 - - - - - - - 
 - - - - - - - 
 - - - - - - - 

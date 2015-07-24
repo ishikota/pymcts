@@ -52,7 +52,7 @@ class Artist:
         # construct graph object of MCTS tree
         while q:
             pid, parent, is_best = q.pop(0)
-            best_index = _mcts.best_child(parent, C) if is_best else -1
+            best_index = _mcts.best_child(parent, 0) if is_best else -1
             for i, child in enumerate(parent.children):
                 if isinstance(child, int):continue
                 G.add_node(str(id_count))

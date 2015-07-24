@@ -63,7 +63,6 @@ class Tester(object):
         mc, model = self.setup_algo(algo)
         mc.set_playout(playout)
         ans, model, next_player = r.read_board(testfile, model)
-        ans = int(ans)
         model.next_player = next_player
 
         # execute test
@@ -73,8 +72,11 @@ class Tester(object):
         for i in range(repeat):
             root, act = mc.start(model)
             res.append(act)
-            best_visit = root.children[ans].update
-            if act == ans:
+            best_visit = 0
+            for a in ans:
+                best_visit += root.children[a].update
+
+            if act in ans:
                 if best_visit > bc_visit:
                     bc = root.children[act]
                     bc_visit = best_visit
@@ -113,15 +115,16 @@ class Tester(object):
         for act in res:
             dist[act]+=1
 
-        accuracy = len([1 for act in res if act == ans])*1.0/len(res)
-        bc_freq = bc.parent.children[ans].update*1.0/bc.parent.update if bc else 0
-        bw_freq = bw.parent.children[ans].update*1.0/bw.parent.update if bw else 0
-        wc_freq = wc.parent.children[ans].update*1.0/wc.parent.update if wc else 0
-        ww_freq = ww.parent.children[ans].update*1.0/ww.parent.update if ww else 0
+        accuracy = len([1 for act in res if act in ans])*1.0/len(res)
+        bc_freq, bw_freq, wc_freq, ww_freq = 0,0,0,0
+        for a in ans: bc_freq += bc.parent.children[a].update if bc else 0
+        for a in ans: bw_freq += bw.parent.children[a].update if bw else 0
+        for a in ans: wc_freq += wc.parent.children[a].update if wc else 0
+        for a in ans: ww_freq += ww.parent.children[a].update if ww else 0
 
         # make directory to output result
         if not os.path.exists(output_dir):
-            os.mkdir(output_dir)
+            os.makedirs(output_dir)
 
         # write out tree images
         painter = artist.Artist()
@@ -150,11 +153,11 @@ class Tester(object):
             w('RATIO      = '+str([freq*1.0/sum(dist) for freq in dist]))
             w('')
             w(' ***  ACCURACY  ***')
-            w(' - accuracy = {1:>5}/{2:<5} = {0:4.5f} %'.format(accuracy*100, len([1 for i in res if i==ans]), len(res)))
-            w(' - bc_freq  = {1:>5}/{2:<5} = {0:4.5f} %'.format(bc_freq*100, bc.parent.children[ans].update if bc else 0, bc.parent.update if bc else 0))
-            w(' - bw_freq  = {1:>5}/{2:<5} = {0:3.5f} %'.format(bw_freq*100, bw.parent.children[ans].update if bw else 0, bw.parent.update if bw else 0))
-            w(' - wc_freq  = {1:>5}/{2:<5} = {0:3.5f} %'.format(wc_freq*100, wc.parent.children[ans].update if wc else 0, wc.parent.update if wc else 0))
-            w(' - ww_freq  = {1:>5}/{2:<5} = {0:3.5f} %'.format(ww_freq*100, ww.parent.children[ans].update if ww else 0, ww.parent.update if ww else 0))
+            w(' - accuracy = {1:>5}/{2:<5} = {0:4.5f} %'.format(accuracy*100, len([1 for i in res if i in ans]), len(res)))
+            w(' - bc_freq  = {1:>5}/{2:<5} = {0:4.5f} %'.format(bc_freq*100.0/bc.parent.update if bc else 0, bc_freq, bc.parent.update if bc else 0))
+            w(' - bw_freq  = {1:>5}/{2:<5} = {0:3.5f} %'.format(bw_freq*100.0/bw.parent.update if bw else 0, bw_freq, bw.parent.update if bw else 0))
+            w(' - wc_freq  = {1:>5}/{2:<5} = {0:3.5f} %'.format(wc_freq*100.0/wc.parent.update if wc else 0, wc_freq, wc.parent.update if wc else 0))
+            w(' - ww_freq  = {1:>5}/{2:<5} = {0:3.5f} %'.format(ww_freq*100.0/ww.parent.update if ww else 0, ww_freq, ww.parent.update if ww else 0))
             w('')
 
         print
@@ -172,9 +175,9 @@ class Tester(object):
         print 'RATIO      = '+str([f*1.0/sum(dist) for f in dist])
         print
         print ' ***  ACCURACY  ***'
-        print ' - accuracy = {1:>5}/{2:<5} = {0:4.5f} %'.format(accuracy*100, len([1 for i in res if i==ans]), len(res))
-        print ' - bc_freq  = {1:>5}/{2:<5} = {0:4.5f} %'.format(bc_freq*100, bc.parent.children[ans].update if bc else 0, bc.parent.update if bc else 0)
-        print ' - bw_freq  = {1:>5}/{2:<5} = {0:3.5f} %'.format(bw_freq*100, bw.parent.children[ans].update if bw else 0, bw.parent.update if bw else 0)
-        print ' - wc_freq  = {1:>5}/{2:<5} = {0:3.5f} %'.format(wc_freq*100, wc.parent.children[ans].update if wc else 0, wc.parent.update if wc else 0)
-        print ' - ww_freq  = {1:>5}/{2:<5} = {0:3.5f} %'.format(ww_freq*100, ww.parent.children[ans].update if ww else 0, ww.parent.update if ww else 0)
+        print ' - accuracy = {1:>5}/{2:<5} = {0:4.5f} %'.format(accuracy*100, len([1 for i in res if i in ans]), len(res))
+        print ' - bc_freq  = {1:>5}/{2:<5} = {0:4.5f} %'.format(bc_freq*100.0/bc.parent.update if bc else 0, bc_freq, bc.parent.update if bc else 0)
+        print ' - bw_freq  = {1:>5}/{2:<5} = {0:3.5f} %'.format(bw_freq*100.0/bw.parent.update if bw else 0, bw_freq, bw.parent.update if bw else 0)
+        print ' - wc_freq  = {1:>5}/{2:<5} = {0:3.5f} %'.format(wc_freq*100.0/wc.parent.update if wc else 0, wc_freq, wc.parent.update if wc else 0)
+        print ' - ww_freq  = {1:>5}/{2:<5} = {0:3.5f} %'.format(ww_freq*100.0/ww.parent.update if ww else 0, ww_freq, ww.parent.update if ww else 0)
         print

@@ -1,0 +1,9 @@
+# easy test set for second player
+# answer path is 0->1->1->{0or4}->{0or4}
+answer:0,1
+- - - - - - - 
+- - - - - O - 
+- - X - - X - 
+- - X - - X - 
+- - O O - X - 
+- - O O X O - 

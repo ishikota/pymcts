@@ -55,9 +55,13 @@ class TestConnectFour:
         def u(i):
             self.G.update(i)
         u(3);u(3);u(3);u(3);u(3);u(3);u(4);u(4);u(2);u(1)
-        flg, score = self.G.is_terminal(5)
+        flg, score = self.G.is_terminal(1, 5)
         ok_(flg)
-        flg, score = self.G.is_terminal(0)
+        ok_(1, score)
+        flg, score = self.G.is_terminal(-1, 5)
+        ok_(flg)
+        eq_(0, score)
+        flg, score = self.G.is_terminal(1,0)
         ok_(not flg)
 
     def test_is_draw(self):
@@ -79,13 +83,13 @@ class TestConnectFour:
     def test_simulation(self):
         for i in range(50):
             cp = self.G.clone()
-            cp.simulation()
+            score = cp.simulation(-1)
             flg = False
             for i in range(7):
                 cp.position[i] = max(cp.position[i]-1, 0)
             cp.next_player = -cp.next_player
             for i in range(7):
-                tmp,score = cp.is_terminal(i)
+                tmp,score = cp.is_terminal(self.G.next_player, i)
                 flg |= tmp
             if i%10 == 0:
                 cp.display()

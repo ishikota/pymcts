@@ -29,7 +29,7 @@ while True:
     # Player turn
     print '> Input the column to make a move...'
     action = int(raw_input())-1
-    end_flg, score = model.is_terminal(action)
+    end_flg, score = model.is_terminal(1, action)
     model.update(action)
     model.display()
     if end_flg:
@@ -39,7 +39,7 @@ while True:
     # MCTS CPU Turn
     root, action = _mcts.start(model)
     print 'MCTS make a move on column '+str(action+1)
-    end_flg, score = model.is_terminal(action)
+    end_flg, score = model.is_terminal(-1, action)
     model.update(action)
     model.display()
     if end_flg:

@@ -37,15 +37,15 @@ class ConnectFour(Game):
     def is_legal(self, node_index):
         return self.position[node_index] != self.HEIGHT
 
-    def simulation(self):
+    def simulation(self, me):
         while True:
             action = self.get_legal_move()
-            flg, score = self.is_terminal(action)
+            flg, score = self.is_terminal(me, action)
             self.update(action)
             if flg: return score
 
-    def is_terminal(self, node_index):
-        if self.is_draw(node_index): return True, 0
+    def is_terminal(self, me, node_index):
+        if self.is_draw(node_index): return True, 0.5
 
         row = self.position[node_index]
         col = node_index
@@ -65,7 +65,8 @@ class ConnectFour(Game):
                 line_nums[d/2] += 1
             if d%2==1 or d==6:
                 if line_nums[d/2] >=self.CONNECT_K:
-                    return True, 1
+                    score = 1 if self.next_player == me else 0
+                    return True, score
         return False, None
 
     def is_draw(self, node_index):

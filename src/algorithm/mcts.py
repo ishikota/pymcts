@@ -14,6 +14,7 @@ class MCTS(object):
         self.show_progress = False
         self.PLAYOUT_NUM = 50
         self.overflow_flg = False
+        self.ME = 0
 
     def set_playout(self, num):
         self.PLAYOUT_NUM = num
@@ -27,6 +28,7 @@ class MCTS(object):
         Returns:
             act_index: index of best action of root node.
         """
+        self.ME = start_state.next_player
         self.overflow_flg = False
         v_0 = Node(start_state.act_num)
         counter = 0
@@ -94,7 +96,7 @@ class MCTS(object):
         # add new expanded node to the tree
         child_node = Node(game.act_num)
         child_node.parent = v
-        is_terminal, score = game.is_terminal(act_index)
+        is_terminal, score = game.is_terminal(self.ME, act_index)
         game.update(act_index)
         if is_terminal:
             child_node.is_terminal = True
@@ -147,7 +149,7 @@ class MCTS(object):
                 result score of simulation which defined in game object.
         """
         if v_l.is_terminal: return v_l.val
-        return game.simulation()
+        return game.simulation(self.ME)
 
     def backpropagation(self, v_l, delta):
         """backpropagates simulation result
