@@ -4,3 +4,4 @@
 *.swp
 /performance/accuracy/out/
 /performance/strength/out/
+/performance/time/out/

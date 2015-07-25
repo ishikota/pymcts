@@ -5,16 +5,17 @@ PARENT_PATH = os.getenv('PYMCTS_ROOT')
 SRC_PATH = PARENT_PATH +"src/"
 sys.path.append(SRC_PATH+"algorithm")
 sys.path.append(SRC_PATH+"examples/connectfour/")
+sys.path.append(PARENT_PATH+"performance/")
 sys.path.append(PARENT_PATH+"performance/accuracy/testset")
 sys.path.append(SRC_PATH+"drawing")
-
+import base_tester
 import mcts
 import connectfour_model
 import heuristic_model
 import pdb
 import time
 
-class Tester(object):
+class Tester(base_tester.BaseTester):
     """
     Execute test with passed parameter and output result
     
@@ -23,27 +24,6 @@ class Tester(object):
         {best,worst}_{correct,wrong}.png: img of MCTS tree
     """
     
-    def setup_algo(self, algo):
-        """
-        get proper MCTS module and model from specified algorithm
-        
-        Args:
-            algo: algorithm to use
-
-        Returns:
-            mcts: MCTS module which is used in algo
-            model: model which is used in algo
-        """
-
-        mc, model = None, None
-        if algo == "model_heuristic":
-            mc = mcts.MCTS()
-            model = heuristic_model.ConnectFour()
-        else: # default
-            mc = mcts.MCTS()
-            model = connectfour_model.ConnectFour()
-        return mc, model
-
     def test(self, algo, playout, repeat, output_dir):
         """
         Measure MCTS search time of specified MCTS algorithm
