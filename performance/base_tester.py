@@ -12,7 +12,7 @@ sys.path.append(SRC_PATH+"examples/connectfour")
 
 import mcts
 import mix_operator
-
+import crazystone
 import connectfour_model
 import heuristic_model
 
@@ -30,6 +30,7 @@ class BaseTester(object):
     UCT = "UCT MCTS"
     HEURISTIC = "HEURISTIC SIMULATION MCTS"
     MIX_OPERATOR = "MIX OPERATOR MCTS"
+    CRAZYSTONE = "CRAZY STONE MCTS"
 
     def setup_algo(self, algo):
         """
@@ -49,6 +50,9 @@ class BaseTester(object):
             model = heuristic_model.ConnectFour()
         elif algo == self.MIX_OPERATOR:
             mc = mix_operator.MCTS()
+            model = connectfour_model.ConnectFour()
+        elif algo == self.CRAZYSTONE:
+            mc = crazystone.MCTS()
             model = connectfour_model.ConnectFour()
         else: # algo == UCT
             mc = mcts.MCTS()

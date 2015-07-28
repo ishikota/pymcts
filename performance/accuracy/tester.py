@@ -14,7 +14,6 @@ import reader
 import mcts
 import connectfour_model
 import heuristic_model
-import pdb
 import artist
 
 class Tester(base_tester.BaseTester):

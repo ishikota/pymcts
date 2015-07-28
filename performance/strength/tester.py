@@ -26,7 +26,7 @@ class Tester(base_tester.BaseTester):
     """
     
 
-    def test(self, algo1, algo2, playout, repeat, output_dir):
+    def test(self, algo1, algo2, budget, limit, repeat, output_dir):
         """
         Execute test with passed parameter and
         output result to specified directory.
@@ -34,7 +34,8 @@ class Tester(base_tester.BaseTester):
         Args:
             algo1: algorithm of MCTS to test
             algo2: algorithm of MCTS to test
-            playout: computational budget of MCTS iteration
+            budget: type of computational budget (0=TIME, 1=PLAYOUT)
+            limit: computational budget of MCTS iteration
             repeat: the number of times to repeat test
             output_dir: the name of directory to output the result
         """
@@ -44,8 +45,10 @@ class Tester(base_tester.BaseTester):
         mc1, model1 = self.setup_algo(algo1)
         mc2, model2 = self.setup_algo(algo2)
         mc1.ME = 1; mc2.ME = -1
-        mc1.set_playout(playout)
-        mc2.set_playout(playout)
+        mc1.set_budget(budget)
+        mc1.set_limit(limit)
+        mc2.set_budget(budget)
+        mc2.set_limit(limit)
 
         # execute test
         memo = [0 for i in range(3)] # draw, first-win, second-win
@@ -54,9 +57,9 @@ class Tester(base_tester.BaseTester):
             _model2 = model2.clone()
             res = G.play(mc1, _model1, mc2, _model2)
             memo[res] += 1
-        self.output_result(algo1, algo2, playout, repeat, output_dir, memo)
+        self.output_result(algo1, algo2, budget, limit, repeat, output_dir, memo)
 
-    def output_result(self, algo1, algo2, playout, repeat, output_dir, memo):
+    def output_result(self, algo1, algo2, budget, limit, repeat, output_dir, memo):
         """ 
             Format and output result
         """
@@ -69,7 +72,7 @@ class Tester(base_tester.BaseTester):
         def w(s):
             f.write(s+'\n')
 
-        with open(output_dir+'/report.txt', 'w+') as f:
+        with open(output_dir+'/report.txt', 'a+') as f:
             w('')
             w('')
             w('************** MCTS STRENGTH TEST ******************')
@@ -77,7 +80,8 @@ class Tester(base_tester.BaseTester):
             w(' *** SETTINGS ***')
             w(' PLAYER1   = {0}'.format(algo1))
             w(' PLAYER2   = {0}'.format(algo2))
-            w(' BUDGET    = {0}'.format(playout))
+            w(' BUDGET    = {0}'.format("TIME" if budget==0 else "PLAYOUT"))
+            w(' LIMIT     = {0}'.format(limit))
             w(' REPEAT    = {0}'.format(repeat))
             w('')
             w(' *** RESULT ***')
@@ -94,7 +98,8 @@ class Tester(base_tester.BaseTester):
             print ' *** SETTINGS ***'
             print ' PLAYER1   = {0}'.format(algo1)
             print ' PLAYER2   = {0}'.format(algo2)
-            print ' BUDGET    = {0}'.format(playout)
+            print ' BUDGET    = {0}'.format("TIME" if budget==0 else "PLAYOUT")
+            print ' LIMIT     = {0}'.format(limit)
             print ' REPEAT    = {0}'.format(repeat)
             print ''
             print ' *** RESULT ***'
