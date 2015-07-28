@@ -41,6 +41,9 @@ class ConnectFour(Game):
         while True:
             action = self.get_legal_move()
             flg, score = self.is_terminal(me, action)
+            if flg:
+                if self.next_player != me:
+                    score = -score
             self.update(action)
             if flg: return score
 
@@ -65,7 +68,7 @@ class ConnectFour(Game):
                 line_nums[d/2] += 1
             if d%2==1 or d==6:
                 if line_nums[d/2] >=self.CONNECT_K:
-                    score = 1 if self.next_player == me else 0
+                    score = 1# if self.next_player == me else -1
                     return True, score
         return False, None
 
