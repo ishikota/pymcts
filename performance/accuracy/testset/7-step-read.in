@@ -1,0 +1,9 @@
+# easy test set for second player
+# SCORE:[0, 0, 0, 30, 0, 30, 0]
+answer:3,5
+- - - - - - - 
+- - X - - - - 
+- - O - X - - 
+- - X - O - X 
+X - X - O X O 
+O - O - X O O 
