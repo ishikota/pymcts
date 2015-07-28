@@ -15,6 +15,7 @@ import mcts
 import pdb
 import connectfour_model
 from node import Node
+import time
 import math
 import reader
 
@@ -30,11 +31,28 @@ class TestMCTS(TestCase):
     def test_main_routine(self):
         model = self.G
         r = reader.Reader()
+        f_name = PARENT_PATH+"performance/accuracy/testset/sample.in"
+        ans, model, next_player = r.read_board(f_name, model)
+        self.M.set_playout(2000)
+        root, act = self.M.start(model)
+        eq_(6,act)
         f_name = PARENT_PATH+"performance/accuracy/testset/5-step-read.in"
         ans, model, next_player = r.read_board(f_name, model)
         self.M.set_playout(2000)
         root, act = self.M.start(model)
         ok_(0==act or 1==act)
+
+    def test_budget_type(self):
+        self.M.set_budget(self.M.PLAYOUT)
+        self.M.set_limit(250)
+        root, act = self.M.start(self.G)
+        ok_(250, root.update)
+        self.M.set_budget(self.M.TIME)
+        self.M.set_limit(3)
+        st = time.time()
+        self.M.start(self.G)
+        et = time.time()
+        ok_(3<= et -st <= 3.1)
 
     def test_tree_policy(self):
         data = [(31.16,105),(52.89,153),(113.05,285),

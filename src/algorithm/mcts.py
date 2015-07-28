@@ -1,6 +1,7 @@
 import game
 import random
 from node import Node
+import time
 import math
 import util
 
@@ -10,14 +11,37 @@ class MCTS(object):
             PLAYOUT_NUM: paremter to define maximum iteration times of MCTS
     """
 
+    # flg to specify computational budget of MCTS search
+    TIME = 0        # do MCTS search within specified seconds
+    PLAYOUT = 1     # do MCTS search iteration for specified times
+
     def __init__(self):
         self.show_progress = False
-        self.PLAYOUT_NUM = 50
+        self.budget = self.PLAYOUT
+        self.limit = 50
         self.overflow_flg = False
         self.ME = 0
 
     def set_playout(self, num):
-        self.PLAYOUT_NUM = num
+        self.limit = num
+
+    def set_limit(self, val):
+        self.limit = val
+
+    def set_budget(self, flg):
+        self.budget = flg
+
+    def within_budget(self, start_time, play_count):
+        """ Check if reached to defined computational budget
+            Args:
+                start_time: search started time (need if budget==TIME)
+                play_count: search iteration count (need if budget==PLAYOUT)
+        """
+        budget = play_count     # if budget == PLAYOUT
+        if self.budget == self.TIME:
+            ct = time.time()
+            budget = ct - start_time    # if budget == TIME
+        return budget < self.limit
 
     def start(self, start_state):
         """Start point of MCTS algorithm
@@ -31,11 +55,12 @@ class MCTS(object):
         self.ME = start_state.next_player
         self.overflow_flg = False
         v_0 = Node(start_state.act_num)
+        st = time.time()
         counter = 0
         
-        while counter < self.PLAYOUT_NUM and not self.overflow_flg:
+        while self.within_budget(st, counter) and not self.overflow_flg:
             if self.show_progress:
-                util.show_progress(counter, self.PLAYOUT_NUM)
+                util.show_progress(counter, self.limit)
             game_state = start_state.clone()
             v_l = self.tree_policy(v_0, game_state)
             delta = self.default_policy(v_l, game_state)
@@ -97,10 +122,10 @@ class MCTS(object):
         child_node = Node(game.act_num)
         child_node.parent = v
         is_terminal, score = game.is_terminal(self.ME, act_index)
-        game.update(act_index)
         if is_terminal:
             child_node.is_terminal = True
             child_node.val = score
+        game.update(act_index)
         v.children[act_index] = child_node
         return child_node
 
